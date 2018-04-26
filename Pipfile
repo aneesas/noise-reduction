@@ -6,6 +6,10 @@ name = "pypi"
 [packages]
 tensorflow = "*"
 pandas = "*"
+ipython = "*"
+numpy = "*"
+scipy = "*"
+nnresample = "*"
 
 [dev-packages]
 
