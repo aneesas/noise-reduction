@@ -10,6 +10,8 @@ ipython = "*"
 numpy = "*"
 scipy = "*"
 nnresample = "*"
+"h5py" = "*"
+matplotlib = "*"
 
 [dev-packages]
 
