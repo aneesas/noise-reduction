@@ -30,3 +30,6 @@ predict_input_fn = tf.estimator.inputs.numpy_input_fn(
 predictions = list(fcn_DAE.predict(input_fn=predict_input_fn))
 
 predictions = [p["output"] for p in predictions]
+
+
+# F2, 

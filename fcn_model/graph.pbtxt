@@ -2122,137 +2122,6 @@ node {
   }
 }
 node {
-  name: "conv1d/CRelu/Neg"
-  op: "Neg"
-  input: "conv1d/BiasAdd"
-  attr {
-    key: "T"
-    value {
-      type: DT_FLOAT
-    }
-  }
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 100
-          }
-          dim {
-            size: 512
-          }
-          dim {
-            size: 5
-          }
-        }
-      }
-    }
-  }
-}
-node {
-  name: "conv1d/CRelu/axis"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_INT32
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_INT32
-        tensor_shape {
-        }
-        int_val: -1
-      }
-    }
-  }
-}
-node {
-  name: "conv1d/CRelu"
-  op: "ConcatV2"
-  input: "conv1d/BiasAdd"
-  input: "conv1d/CRelu/Neg"
-  input: "conv1d/CRelu/axis"
-  attr {
-    key: "N"
-    value {
-      i: 2
-    }
-  }
-  attr {
-    key: "T"
-    value {
-      type: DT_FLOAT
-    }
-  }
-  attr {
-    key: "Tidx"
-    value {
-      type: DT_INT32
-    }
-  }
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 100
-          }
-          dim {
-            size: 512
-          }
-          dim {
-            size: 10
-          }
-        }
-      }
-    }
-  }
-}
-node {
-  name: "conv1d/CRelu/Relu"
-  op: "Relu"
-  input: "conv1d/CRelu"
-  attr {
-    key: "T"
-    value {
-      type: DT_FLOAT
-    }
-  }
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 100
-          }
-          dim {
-            size: 512
-          }
-          dim {
-            size: 10
-          }
-        }
-      }
-    }
-  }
-}
-node {
   name: "conv1d_1/kernel/Initializer/random_uniform/shape"
   op: "Const"
   attr {
@@ -2291,7 +2160,7 @@ node {
             size: 3
           }
         }
-        tensor_content: "\024\000\000\000\n\000\000\000\001\000\000\000"
+        tensor_content: "\024\000\000\000\005\000\000\000\001\000\000\000"
       }
     }
   }
@@ -2329,7 +2198,7 @@ node {
         dtype: DT_FLOAT
         tensor_shape {
         }
-        float_val: -0.16514456272125244
+        float_val: -0.22360679507255554
       }
     }
   }
@@ -2367,7 +2236,7 @@ node {
         dtype: DT_FLOAT
         tensor_shape {
         }
-        float_val: 0.16514456272125244
+        float_val: 0.22360679507255554
       }
     }
   }
@@ -2399,7 +2268,7 @@ node {
             size: 20
           }
           dim {
-            size: 10
+            size: 5
           }
           dim {
             size: 1
@@ -2484,7 +2353,7 @@ node {
             size: 20
           }
           dim {
-            size: 10
+            size: 5
           }
           dim {
             size: 1
@@ -2522,7 +2391,7 @@ node {
             size: 20
           }
           dim {
-            size: 10
+            size: 5
           }
           dim {
             size: 1
@@ -2552,7 +2421,7 @@ node {
             size: 20
           }
           dim {
-            size: 10
+            size: 5
           }
           dim {
             size: 1
@@ -2581,7 +2450,7 @@ node {
           size: 20
         }
         dim {
-          size: 10
+          size: 5
         }
         dim {
           size: 1
@@ -2624,7 +2493,7 @@ node {
             size: 20
           }
           dim {
-            size: 10
+            size: 5
           }
           dim {
             size: 1
@@ -2673,7 +2542,7 @@ node {
             size: 20
           }
           dim {
-            size: 10
+            size: 5
           }
           dim {
             size: 1
@@ -2999,7 +2868,7 @@ node {
 node {
   name: "conv1d_1/conv1d/ExpandDims"
   op: "ExpandDims"
-  input: "conv1d/CRelu/Relu"
+  input: "conv1d/BiasAdd"
   input: "conv1d_1/conv1d/ExpandDims/dim"
   attr {
     key: "T"
@@ -3028,7 +2897,7 @@ node {
             size: 512
           }
           dim {
-            size: 10
+            size: 5
           }
         }
       }
@@ -3094,7 +2963,7 @@ node {
             size: 20
           }
           dim {
-            size: 10
+            size: 5
           }
           dim {
             size: 1
@@ -6708,7 +6577,7 @@ node {
             size: 4
           }
         }
-        tensor_content: "d\000\000\000\001\000\000\000\000\002\000\000\n\000\000\000"
+        tensor_content: "d\000\000\000\001\000\000\000\000\002\000\000\005\000\000\000"
       }
     }
   }
@@ -6744,7 +6613,7 @@ node {
             size: 4
           }
         }
-        tensor_content: "\001\000\000\000\024\000\000\000\n\000\000\000\001\000\000\000"
+        tensor_content: "\001\000\000\000\024\000\000\000\005\000\000\000\001\000\000\000"
       }
     }
   }
@@ -6776,7 +6645,7 @@ node {
             size: 512
           }
           dim {
-            size: 10
+            size: 5
           }
         }
       }
@@ -6847,7 +6716,7 @@ node {
             size: 20
           }
           dim {
-            size: 10
+            size: 5
           }
           dim {
             size: 1
@@ -6937,7 +6806,7 @@ node {
             size: 512
           }
           dim {
-            size: 10
+            size: 5
           }
         }
       }
@@ -6975,7 +6844,7 @@ node {
             size: 20
           }
           dim {
-            size: 10
+            size: 5
           }
           dim {
             size: 1
@@ -7016,7 +6885,7 @@ node {
             size: 3
           }
         }
-        tensor_content: "d\000\000\000\000\002\000\000\n\000\000\000"
+        tensor_content: "d\000\000\000\000\002\000\000\005\000\000\000"
       }
     }
   }
@@ -7050,7 +6919,7 @@ node {
             size: 512
           }
           dim {
-            size: 10
+            size: 5
           }
         }
       }
@@ -7088,7 +6957,7 @@ node {
             size: 3
           }
         }
-        tensor_content: "\024\000\000\000\n\000\000\000\001\000\000\000"
+        tensor_content: "\024\000\000\000\005\000\000\000\001\000\000\000"
       }
     }
   }
@@ -7119,7 +6988,7 @@ node {
             size: 20
           }
           dim {
-            size: 10
+            size: 5
           }
           dim {
             size: 1
@@ -7130,421 +6999,9 @@ node {
   }
 }
 node {
-  name: "gradients/conv1d/CRelu/Relu_grad/ReluGrad"
-  op: "ReluGrad"
-  input: "gradients/conv1d_1/conv1d/ExpandDims_grad/Reshape"
-  input: "conv1d/CRelu/Relu"
-  attr {
-    key: "T"
-    value {
-      type: DT_FLOAT
-    }
-  }
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 100
-          }
-          dim {
-            size: 512
-          }
-          dim {
-            size: 10
-          }
-        }
-      }
-    }
-  }
-}
-node {
-  name: "gradients/conv1d/CRelu_grad/Rank"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_INT32
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_INT32
-        tensor_shape {
-        }
-        int_val: 3
-      }
-    }
-  }
-}
-node {
-  name: "gradients/conv1d/CRelu_grad/mod"
-  op: "FloorMod"
-  input: "conv1d/CRelu/axis"
-  input: "gradients/conv1d/CRelu_grad/Rank"
-  attr {
-    key: "T"
-    value {
-      type: DT_INT32
-    }
-  }
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-        }
-      }
-    }
-  }
-}
-node {
-  name: "gradients/conv1d/CRelu_grad/Shape"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 3
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_INT32
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_INT32
-        tensor_shape {
-          dim {
-            size: 3
-          }
-        }
-        tensor_content: "d\000\000\000\000\002\000\000\005\000\000\000"
-      }
-    }
-  }
-}
-node {
-  name: "gradients/conv1d/CRelu_grad/Shape_1"
-  op: "Const"
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 3
-          }
-        }
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_INT32
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_INT32
-        tensor_shape {
-          dim {
-            size: 3
-          }
-        }
-        tensor_content: "d\000\000\000\000\002\000\000\005\000\000\000"
-      }
-    }
-  }
-}
-node {
-  name: "gradients/conv1d/CRelu_grad/ConcatOffset"
-  op: "ConcatOffset"
-  input: "gradients/conv1d/CRelu_grad/mod"
-  input: "gradients/conv1d/CRelu_grad/Shape"
-  input: "gradients/conv1d/CRelu_grad/Shape_1"
-  attr {
-    key: "N"
-    value {
-      i: 2
-    }
-  }
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 3
-          }
-        }
-        shape {
-          dim {
-            size: 3
-          }
-        }
-      }
-    }
-  }
-}
-node {
-  name: "gradients/conv1d/CRelu_grad/Slice"
-  op: "Slice"
-  input: "gradients/conv1d/CRelu/Relu_grad/ReluGrad"
-  input: "gradients/conv1d/CRelu_grad/ConcatOffset"
-  input: "gradients/conv1d/CRelu_grad/Shape"
-  attr {
-    key: "Index"
-    value {
-      type: DT_INT32
-    }
-  }
-  attr {
-    key: "T"
-    value {
-      type: DT_FLOAT
-    }
-  }
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 100
-          }
-          dim {
-            size: 512
-          }
-          dim {
-            size: 5
-          }
-        }
-      }
-    }
-  }
-}
-node {
-  name: "gradients/conv1d/CRelu_grad/Slice_1"
-  op: "Slice"
-  input: "gradients/conv1d/CRelu/Relu_grad/ReluGrad"
-  input: "gradients/conv1d/CRelu_grad/ConcatOffset:1"
-  input: "gradients/conv1d/CRelu_grad/Shape_1"
-  attr {
-    key: "Index"
-    value {
-      type: DT_INT32
-    }
-  }
-  attr {
-    key: "T"
-    value {
-      type: DT_FLOAT
-    }
-  }
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 100
-          }
-          dim {
-            size: 512
-          }
-          dim {
-            size: 5
-          }
-        }
-      }
-    }
-  }
-}
-node {
-  name: "gradients/conv1d/CRelu_grad/tuple/group_deps"
-  op: "NoOp"
-  input: "^gradients/conv1d/CRelu_grad/Slice"
-  input: "^gradients/conv1d/CRelu_grad/Slice_1"
-}
-node {
-  name: "gradients/conv1d/CRelu_grad/tuple/control_dependency"
-  op: "Identity"
-  input: "gradients/conv1d/CRelu_grad/Slice"
-  input: "^gradients/conv1d/CRelu_grad/tuple/group_deps"
-  attr {
-    key: "T"
-    value {
-      type: DT_FLOAT
-    }
-  }
-  attr {
-    key: "_class"
-    value {
-      list {
-        s: "loc:@gradients/conv1d/CRelu_grad/Slice"
-      }
-    }
-  }
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 100
-          }
-          dim {
-            size: 512
-          }
-          dim {
-            size: 5
-          }
-        }
-      }
-    }
-  }
-}
-node {
-  name: "gradients/conv1d/CRelu_grad/tuple/control_dependency_1"
-  op: "Identity"
-  input: "gradients/conv1d/CRelu_grad/Slice_1"
-  input: "^gradients/conv1d/CRelu_grad/tuple/group_deps"
-  attr {
-    key: "T"
-    value {
-      type: DT_FLOAT
-    }
-  }
-  attr {
-    key: "_class"
-    value {
-      list {
-        s: "loc:@gradients/conv1d/CRelu_grad/Slice_1"
-      }
-    }
-  }
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 100
-          }
-          dim {
-            size: 512
-          }
-          dim {
-            size: 5
-          }
-        }
-      }
-    }
-  }
-}
-node {
-  name: "gradients/conv1d/CRelu/Neg_grad/Neg"
-  op: "Neg"
-  input: "gradients/conv1d/CRelu_grad/tuple/control_dependency_1"
-  attr {
-    key: "T"
-    value {
-      type: DT_FLOAT
-    }
-  }
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 100
-          }
-          dim {
-            size: 512
-          }
-          dim {
-            size: 5
-          }
-        }
-      }
-    }
-  }
-}
-node {
-  name: "gradients/AddN"
-  op: "AddN"
-  input: "gradients/conv1d/CRelu_grad/tuple/control_dependency"
-  input: "gradients/conv1d/CRelu/Neg_grad/Neg"
-  attr {
-    key: "N"
-    value {
-      i: 2
-    }
-  }
-  attr {
-    key: "T"
-    value {
-      type: DT_FLOAT
-    }
-  }
-  attr {
-    key: "_class"
-    value {
-      list {
-        s: "loc:@gradients/conv1d/CRelu_grad/Slice"
-      }
-    }
-  }
-  attr {
-    key: "_output_shapes"
-    value {
-      list {
-        shape {
-          dim {
-            size: 100
-          }
-          dim {
-            size: 512
-          }
-          dim {
-            size: 5
-          }
-        }
-      }
-    }
-  }
-}
-node {
   name: "gradients/conv1d/BiasAdd_grad/BiasAddGrad"
   op: "BiasAddGrad"
-  input: "gradients/AddN"
+  input: "gradients/conv1d_1/conv1d/ExpandDims_grad/Reshape"
   attr {
     key: "T"
     value {
@@ -7573,13 +7030,13 @@ node {
 node {
   name: "gradients/conv1d/BiasAdd_grad/tuple/group_deps"
   op: "NoOp"
-  input: "^gradients/AddN"
+  input: "^gradients/conv1d_1/conv1d/ExpandDims_grad/Reshape"
   input: "^gradients/conv1d/BiasAdd_grad/BiasAddGrad"
 }
 node {
   name: "gradients/conv1d/BiasAdd_grad/tuple/control_dependency"
   op: "Identity"
-  input: "gradients/AddN"
+  input: "gradients/conv1d_1/conv1d/ExpandDims_grad/Reshape"
   input: "^gradients/conv1d/BiasAdd_grad/tuple/group_deps"
   attr {
     key: "T"
@@ -7591,7 +7048,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@gradients/conv1d/CRelu_grad/Slice"
+        s: "loc:@gradients/conv1d_1/conv1d/ExpandDims_grad/Reshape"
       }
     }
   }
@@ -8285,7 +7742,7 @@ node {
             size: 20
           }
           dim {
-            size: 10
+            size: 5
           }
           dim {
             size: 1
@@ -11172,7 +10629,7 @@ node {
         dtype: DT_STRING
         tensor_shape {
         }
-        string_val: "_temp_df7a85eb086d471ca8c443d9932a0c7e/part"
+        string_val: "_temp_97c5cfa473fd46f4bcf01466442f3816/part"
       }
     }
   }
@@ -11782,7 +11239,7 @@ node {
             size: 20
           }
           dim {
-            size: 10
+            size: 5
           }
           dim {
             size: 1

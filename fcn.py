@@ -42,7 +42,7 @@ def fcn_model(features, labels, mode):
         filters=NUM_FILTERS,
         kernel_size=FILTER_SIZE,
         padding="same",
-        activation=tf.nn.crelu)
+        activation=None)
 
     conv2 = tf.layers.conv1d(
         inputs=conv1,
