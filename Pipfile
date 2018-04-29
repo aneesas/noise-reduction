@@ -9,7 +9,6 @@ pandas = "*"
 ipython = "*"
 numpy = "*"
 scipy = "*"
-nnresample = "*"
 "h5py" = "*"
 matplotlib = "*"
 
