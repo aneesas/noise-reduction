@@ -17,8 +17,8 @@ import os
 tf.logging.set_verbosity(tf.logging.INFO)
 
 INPUT_LENGTH = 512  # number of samples in each input waveform
-NUM_FILTERS = 5
-FILTER_SIZE = 20
+NUM_FILTERS = 15
+FILTER_SIZE = 10
 LEARNING_RATE = 0.1
 BATCH_SIZE = 100
 NUM_EPOCHS = 1
