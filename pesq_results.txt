@@ -1,0 +1,4 @@
+REFERENCE	 DEGRADED	 PESQMOS	 MOSLQO	 SAMPLE_FREQ	 MODE
+data/testwav/network1/org1.wav	 data/testwav/network1/noisy1.wav	 1.926	 1.575	 16000	nb
+data/testwav/network1/org1.wav	 data/testwav/network1/pred1.wav	 1.974	 1.611	 16000	nb
+data/testwav/network1/org1.wav	 data/testwav/network1/org1.wav	 4.500	 4.549	 16000	nb
