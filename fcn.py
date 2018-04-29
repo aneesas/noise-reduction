@@ -17,11 +17,12 @@ import os
 tf.logging.set_verbosity(tf.logging.INFO)
 
 INPUT_LENGTH = 512  # number of samples in each input waveform
-NUM_FILTERS = 15
-FILTER_SIZE = 11
-LEARNING_RATE = 0.001
+NUM_FILTERS = 5
+FILTER_SIZE = 20
+LEARNING_RATE = 0.1
 BATCH_SIZE = 100
 NUM_EPOCHS = 1
+NUM_STEPS = 10000
 
 checkpoints_path = "/Users/aneesasonawalla/Documents/GT/ECE6255/Project/source/fcn_model"
 data_path = "/Users/aneesasonawalla/Documents/GT/ECE6255/Project/source/data/"
@@ -41,12 +42,28 @@ def fcn_model(features, labels, mode):
         filters=NUM_FILTERS,
         kernel_size=FILTER_SIZE,
         padding="same",
-        activation=tf.nn.relu)
+        activation=tf.nn.crelu)
+
+    conv2 = tf.layers.conv1d(
+        inputs=conv1,
+        filters=1,
+        kernel_size=FILTER_SIZE,
+        padding="same",
+        #activation=tf.nn.relu)
+        activation=None)
+
+    output = tf.reshape(conv2, [-1, INPUT_LENGTH])
+
+    predictions = {
+        "output": output
+    }
+
+    if mode == tf.estimator.ModeKeys.PREDICT:
+        return tf.estimator.EstimatorSpec(mode=mode, predictions=predictions)
 
     loss = tf.losses.mean_squared_error(
         labels,
-        conv1,
-        reduction=tf.losses.Reduction.MEAN)
+        output)
 
     if mode == tf.estimator.ModeKeys.TRAIN:
         optimizer = tf.train.GradientDescentOptimizer(learning_rate=LEARNING_RATE)
@@ -60,7 +77,7 @@ def fcn_model(features, labels, mode):
     eval_metric_ops = {
         "accuracy": tf.metrics.accuracy(
             labels=labels,
-            predictions=conv1)}
+            predictions=output)}
     return tf.estimator.EstimatorSpec(
         mode=mode, loss=loss, eval_metric_ops=eval_metric_ops)
 
@@ -93,6 +110,9 @@ def main(unused_argv):
                     noisy_split = noisy.reshape((num_segments, INPUT_LENGTH))
                     train_data_noisy = np.vstack((train_data_noisy, noisy_split))
                     train_data_clean = np.vstack((train_data_clean, clean_split))
+
+        train_data_noisy = train_data_noisy.astype('float32')
+        train_data_clean = train_data_clean.astype('float32')
 
         # Save as npz file for easier future use
         np.savez(data_path+"training_data_full.npz",
@@ -130,6 +150,9 @@ def main(unused_argv):
                 eval_data_noisy = np.vstack((eval_data_noisy, noisy_split))
                 eval_data_clean = np.vstack((eval_data_clean, clean_split))
 
+        eval_data_noisy = eval_data_noisy.astype('float32')
+        eval_data_clean = eval_data_clean.astype('float32')
+
         # Save as npz file for easier future use
         np.savez(data_path+"testing_data_full.npz",
                  noisy=eval_data_noisy,
@@ -146,7 +169,7 @@ def main(unused_argv):
         num_epochs=None,
         shuffle=True)
 
-    fcn_DAE.train(input_fn=train_input_fn, steps=20000)
+    fcn_DAE.train(input_fn=train_input_fn, steps=NUM_STEPS)
 
     eval_input_fn = tf.estimator.inputs.numpy_input_fn(
         x={"x": eval_data_noisy},

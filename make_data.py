@@ -4,13 +4,13 @@
 
 import os
 import wave
-#import nnresample
 import struct
 import numpy as np
 import glob
 import h5py
 
-#SAMPLE_RATE = 8000 # Hz
+SAMPLE_RATE = 16000 # Hz
+SNR = 5  # dB
 
 path = '/Users/aneesasonawalla/Documents/GT/ECE6255/Project/source/data/'
 
@@ -24,19 +24,21 @@ train_noise = []
 for filepath in training_noise_files:
 	with wave.open(filepath, mode='rb') as fp:
 		raw_data = fp.readframes(fp.getnframes())
-		signal = struct.unpack('<'+str(fp.getnframes())+'h', raw_data)
-		#train_noise.append(nnresample.resample(signal, SAMPLE_RATE,
-		#									   fp.getframerate()))
-		train_noise.append(np.array(signal, dtype='int32'))
+		signal = np.array(struct.unpack('<'+str(fp.getnframes())+'h', raw_data),
+						  dtype='float32')
+		# Normalize to -1, 1
+		signal = signal/np.max(signal)
+		train_noise.append(signal)
 
 test_noise = []
 for filepath in testing_noise_files:
 	with wave.open(filepath, mode='rb') as fp:
 		raw_data = fp.readframes(fp.getnframes())
-		signal = struct.unpack('<'+str(fp.getnframes())+'h', raw_data)
-		#test_noise.append(nnresample.resample(signal, SAMPLE_RATE,
-		#									  fp.getframerate()))
-		test_noise.append(np.array(signal, dtype='int32'))
+		signal = np.array(struct.unpack('<'+str(fp.getnframes())+'h', raw_data),
+						  dtype='float32')
+		# Normalize to -1, 1
+		signal = signal/np.max(signal)
+		test_noise.append(signal)
 
 
 # Training data--all utterances from first female speaker in DR2
@@ -47,11 +49,17 @@ for filepath in training_data_files:
 	with wave.open(filepath, mode='rb') as fp:
 		raw_data = fp.readframes(fp.getnframes())
 		s = np.array(struct.unpack('<'+str(fp.getnframes())+'h', raw_data),
-					 dtype='int32')
+					 dtype='float32')
+		# Normalize to -1, 1
+		s = s/np.max(s)
+		# Skip first and last 100 ms to avoid silence
+		cutoff = int(SAMPLE_RATE*.1)
+		s = s[cutoff:-cutoff]
+
 	with h5py.File(path+'training_data_{}.hdf5'.format(count), 'w') as fp:
 		fp.create_dataset("clean", data=s)
 
-		# Add 90 types of noise at SNR = 5dB and save each one
+		# Add 90 types of noise at SNR and save each one
 		noise_count = 1
 		P_s = np.sum(np.abs(s)**2)/len(s)  # signal power
 		for noise in train_noise:
@@ -66,9 +74,9 @@ for filepath in training_data_files:
 
 			# Adjust SNR
 			P_n = np.sum(np.abs(noise_ext)**2)/len(noise_ext)
-			k = np.sqrt(P_n/P_s)*10**(.25)  # amplitude adjustment factor
+			k = np.sqrt(P_n/P_s)*10**(SNR/20.)  # amplitude adjustment factor
 			s_noisy = s + noise_ext/k
-			s_noisy = s_noisy.astype('int32')
+			s_noisy = s_noisy.astype('float32')
 
 			fp.create_dataset("n{:03d}".format(noise_count), data=s_noisy)
 			noise_count += 1
@@ -87,7 +95,13 @@ for filepath in testing_data_files:
 	with wave.open(filepath, mode='rb') as fp:
 		raw_data = fp.readframes(fp.getnframes())
 		s = np.array(struct.unpack('<'+str(fp.getnframes())+'h', raw_data),
-					 dtype='int32')
+					 dtype='float32')
+		# Normalize to -1, 1
+		s = s/np.max(s)
+		# Skip first and last 100 ms
+		cutoff = int(SAMPLE_RATE*.1)
+		s = s[cutoff:-cutoff]
+
 	with h5py.File(path+'testing_data_{}.hdf5'.format(count), 'w') as fp:
 		fp.create_dataset("clean", data=s)
 
@@ -106,19 +120,22 @@ for filepath in testing_data_files:
 
 			# Adjust SNR
 			P_n = np.sum(np.abs(noise_ext)**2)/len(noise_ext)
-			k = np.sqrt(P_n/P_s)*10**(.25)  # amplitude adjustment factor
+			k = np.sqrt(P_n/P_s)*10**(SNR/20.)  # amplitude adjustment factor
 			s_noisy = s + noise_ext/k
-			s_noisy = s_noisy.astype('int32')
+			s_noisy = s_noisy.astype('float32')
 
 			fp.create_dataset("n{:03d}".format(noise_count), data=s_noisy)
 			noise_count += 1
 
 		# Add stationary noise (WGN, 0 mean, unit variance)
 		white_noise = np.random.normal(0,1,len(s))
+		# Normalize to -1, 1
+		white_noise = white_noise/np.max(white_noise)
+
 		P_n = np.sum(np.abs(white_noise)**2)/len(white_noise)
-		k = np.sqrt(P_n/P_s)*10**(.25)
+		k = np.sqrt(P_n/P_s)*10**(SNR/20.)
 		s_noisy = s + white_noise/k
-		s_noisy = s_noisy.astype('int32')
+		s_noisy = s_noisy.astype('float32')
 
 		fp.create_dataset("WGN", data=s_noisy)
 

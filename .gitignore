@@ -1,2 +1,4 @@
 tensorflow-samples/
 data/
+fcn_model_*/
+vqmetrics-master/
